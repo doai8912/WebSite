@@ -61,15 +61,10 @@
 				map.addOverlayMapTypeId(mapTypes.bicycle);
 			}
 		}
-		// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수이다.
-		function zoomIn() {
-			map.setLevel(map.getLevel() -1);
-		}
-
-		// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수이다.
-		function zoomOunt() {
-			map.setLevel(map.getLevel() +1);
-		}
+		
+		// 지도 확대 축소를 제어할 수 있는 컨트롤
+		var zoomControl = new kakao.maps.ZoomControl();
+		map.addControl(zoomControl, kakao.maps.ControlPosition.Right);
 	</script>
 </body>
 </html>
