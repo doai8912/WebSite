@@ -32,22 +32,42 @@
 
 		var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-		function setCenter() {            
-		    // 이동할 위도 경도 위치를 생성합니다 
-		    var moveLatLon = new kakao.maps.LatLng(33.452613, 126.570888);
+		var mapTypes = {
+			traffic: kakao.maps.MapTypeId.TRAFFIC,
+			roadview: kakao.maps.MapTypeId.ROADVIEW,
+			bicycle: kakao.maps.MapTypeId.BICYCLE,
+			};
+		
+		function setOverlayMapTypeId() {
+			var chkTraffic = document.getElementById('chkTraffic');
+			var chkRoadview = document.getElementById('chkRoadview');
+			var chkBicycle = document.getElementById('chkBicycle');
 
-		    // 지도 중심을 이동 시킵니다
-		    map.setCenter(moveLatLon);
+			for (var type in mapTypes) {
+				map.removeOverlayMapTypeId(mapTypes[type]);
+			}
+
+			if (chkTraffic.checked) {
+				map.addOverlayMapTypeId(mapTypes.traffic);
+			}
+
+			if (chkRoadview.checked) {
+				map.addOverlayMapTypeId(mapTypes.roadview);
+			}
+
+			if (chkBicycle.checked) {
+				map.addOverlayMapTypeId(mapTypes.bicycle);
+			}
+		}
+		// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수이다.
+		function zoomIn() {
+			map.setLevel(map.getLever() -1);
 		}
 
-		function panTo() {
-		    // 이동할 위도 경도 위치를 생성합니다 
-		    var moveLatLon = new kakao.maps.LatLng(33.450580, 126.574942);
-
-		    // 지도 중심을 부드럽게 이동시킵니다
-		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-		    map.panTo(moveLatLon);            
-		}        
+		// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수이다.
+		function zoomOunt() {
+			map.setLevel(map.getLever() +1);
+		}
 	</script>
 </body>
 </html>
