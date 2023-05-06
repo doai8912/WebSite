@@ -30,14 +30,14 @@
 			traffic: kakao.maps.MapTypeId.TRAFFIC,
 			roadview: kakao.maps.MapTypeId.ROADVIEW,
 			bicycle: kakao.maps.MapTypeId.BICYCLE,
-			hybrid: kakao.maps.MapTypeId.SKYVIEW,
+			skyview: kakao.maps.MapTypeId.SKYVIEW,
 			};
 		
 		function setOverlayMapTypeId() {
-			var	chkTraffic = document.getElementById('chkTraffic'),
-				chkRoadview = document.getElementById('chkRoadview'),
-				chkBicycle = document.getElementById('chkBicycle'),
-				chkSkyview = document.getElementById('chkSkyview'),
+			var chkTraffic = document.getElementById('chkTraffic'),
+			    chkRoadview = document.getElementById('chkRoadview'),
+			    chkBicycle = document.getElementById('chkBicycle'),
+			    chkSkyview = document.getElementById('chkSkyview'),
 
 			for (var type in mapTypes) {
 				map.removeOverlayMapTypeId(mapTypes[type]);
