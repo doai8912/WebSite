@@ -13,9 +13,8 @@
     <p>
 	    <input type="checkbox" id="chkTraffic" onclick="setOverlayMapTypeId()"/> 교통정보 보기
 	    <input type="checkbox" id="chkRoadview" onclick="setOverlayMapTypeId()"/> 로드뷰정보 보기
-	    <input type="checkbox" id="chkBicycle" onclick="setOverlayMapTypeId()"/> 자전거도로정보 보기
-	    <input type="checkbox" id="chkSkyview" onclick="setOverlayMapTypeId()"/> 스카이뷰 보기
-	    <input type="checkbox" id="chkHybrid" onclick="setOverlayMapTypeId()"/> 하이브리드 보기
+	    <input type="checkbox" id="chkBicycle" onclick="setOverlayMapTypeId()"/> 자전거도로정보 기기
+	    <input type="checkbox" id="chkSkyview" onclick="setOverlayMapTypeId()"/>스카이뷰 보기
     </p>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=596e8b2a432eaf26cc87efd9d1da0c0b"></script>
 	<script>		
@@ -31,8 +30,7 @@
 			traffic: kakao.maps.MapTypeId.TRAFFIC,
 			roadview: kakao.maps.MapTypeId.ROADVIEW,
 			bicycle: kakao.maps.MapTypeId.BICYCLE,
-			skyview: kakao.maps.MapTypeId.SKYVIEW,
-			hybrid: kakao.maps.MapTypeId.HYBRID,
+			hybrid: kakao.maps.MapTypeId.SKYVIEW,
 			};
 		
 		function setOverlayMapTypeId() {
@@ -40,12 +38,15 @@
 				chkRoadview = document.getElementById('chkRoadview'),
 				chkBicycle = document.getElementById('chkBicycle'),
 				chkSkyview = document.getElementById('chkSkyview'),
-				chkHybrid = document.getElementById('chkHybrid');
 
 			for (var type in mapTypes) {
 				map.removeOverlayMapTypeId(mapTypes[type]);
 			}
-
+			
+			if (chkSkyview.checked) {
+				map.addOverlayMapTypeId(mapTypes.skyview);
+			}
+			
 			if (chkTraffic.checked) {
 				map.addOverlayMapTypeId(mapTypes.traffic);
 			}
@@ -56,14 +57,6 @@
 
 			if (chkBicycle.checked) {
 				map.addOverlayMapTypeId(mapTypes.bicycle);
-			}
-
-			if (chkSkyview.checked) {
-				map.addOverlayMapTypeId(mapTypes.skyview);
-			}
-			
-			if (chkHybrid.checked) {
-				map.addOverlayMapTypeId(mapTypes.hybrid);
 			}
 		}
 
