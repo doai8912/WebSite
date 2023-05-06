@@ -18,6 +18,10 @@
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=596e8b2a432eaf26cc87efd9d1da0c0b"></script>
 	<script>
 		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(37.57319, 126.96658),
+			level: 7
+		};
 
 		var map = new kakao.maps.Map(container, options);
 	
