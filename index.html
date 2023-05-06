@@ -4,51 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>kakao 지도 시작하기</title>
-	<style>
-		html, body {width: 100%; height: 100%; margin: 0; padding: 0;}
-		.map_wrap {position:relative;overflow:hidden;width:100%;height:350px;}
-		.radius_border{border:1px solid #919191;border-radius:5px;}     
-		.custom_typecontrol {position:absolute;top:10px;right:10px;overflow:hidden;width:130px;height:30px;margin:0;padding:0;z-index:1;font-size:12px;font-family:'Malgun Gothic', '맑은 고딕', sans-serif;}
-		.custom_typecontrol span {display:block;width:65px;height:30px;float:left;text-align:center;line-height:30px;cursor:pointer;}
-		.custom_typecontrol .btn {background:#fff;background:linear-gradient(#fff,  #e6e6e6);}       
-		.custom_typecontrol .btn:hover {background:#f5f5f5;background:linear-gradient(#f5f5f5,#e3e3e3);}
-		.custom_typecontrol .btn:active {background:#e6e6e6;background:linear-gradient(#e6e6e6, #fff);}    
-		.custom_typecontrol .selected_btn {color:#fff;background:#425470;background:linear-gradient(#425470, #5b6d8a);}
-		.custom_typecontrol .selected_btn:hover {color:#fff;}   
-		.custom_zoomcontrol {position:absolute;top:50px;right:10px;width:36px;height:80px;overflow:hidden;z-index:1;background-color:#f5f5f5;} 
-		.custom_zoomcontrol span {display:block;width:36px;height:40px;text-align:center;cursor:pointer;}     
-		.custom_zoomcontrol span img {width:15px;height:15px;padding:12px 0;border:none;}             
-		.custom_zoomcontrol span:first-child{border-bottom:1px solid #bfbfbf;} 
-	</style>
+    <title>kakao 지도로 랜덤 메뉴</title>
     <script src="https://cdnjs.cloudfalre.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="kakaoMap.js"></script>
 </head>
 <body>
-	<div class="map_whole">
-    	<div id="map" style="width:100%;height:350px; position: relative;overflow: hidden;"></div>
-		<div class="custom_typecontrol radius_border">
-			<span id="btnRoadmap" class="selected_btn" onclick="setMapType('roadmap')">지도</span>
-
-			<span id="btnSkyview" class="btn" onclick="setMapType('skyview')">스카이뷰</span>
-
-			<span id="btnHybrid" class="btn" onclick="setMapType('hybrid')">하이브리드</span>
-
-			<span id="btnRoadview" class="btn" onclick="setMapType('roadview')">로드뷰</span>
-
-			<span id="btnTraffic" class="btn" onclick="setMapType('traffic')">교통</span>
-
-			<span id="btnBicycle" class="btn" onclick="setMapType('bicycle')">자전거도로</span>
-		</div>
-
-		<div class="custom_zoomcontrol radius_border"> 
-			<span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>  
-			<span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
-		</div>
-	</div>
-
+    <div id="map" style="width:100%;height:500px;"></div>
+    <p>
+	    <input type="checkbox" id="chkTraffic" onclick="setOverlayMapTypeId()"/> 교통정보 보기
+	    <input type="checkbox" id="chkRoadview" onclick="setOverlayMapTypeId()"/> 로드뷰정보 보기
+	    <input type="checkbox" id="chkBicycle" onclick="setOverlayMapTypeId()"/> 자전거도로정보 보기
+	    <input type="checkbox" id="chkSkyview" onclick="setOverlayMapTypeId()"/> 스카이뷰 보기
+	    <input type="checkbox" id="chkHybrid" onclick="setOverlayMapTypeId()"/> 하이브리드 보기
+    </p>
 	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=596e8b2a432eaf26cc87efd9d1da0c0b"></script>
-
 	<script>		
 		var container = document.getElementById('map');
 		var options = {
@@ -57,76 +26,44 @@
 		};
 
 		var map = new kakao.maps.Map(container, options);
-		
-		//지도 타입 컨트롤 함수.
-		function setMapType(maptype) {
-			var roadmapControl = document.getElementById('btnRoadmap'),
-				skyviewControl = document.getElementById('btnSkyview'),
-				hybridControl = document.getElementById('btnHybrid'),
-				roadviewControl = document.getElementById('btnRoadview'),
-				trafficControl = document.getElementById('btnTraffic'),
-				bicycleControl = document.getElementById('btnBicycle');
 
-			if (maptype === 'roadmap') {
-				map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP)
-				roadmapControl.className = 'selected_btn';
-				skyviewControl.className = 'btn';
-				hybridControl.className = 'btn';
-				roadviewControl.className = 'btn';
-				trafficControl.className = 'btn';
-				bicycleControl.className = 'btn';
+		var mapTypes = {
+			traffic: kakao.maps.MapTypeId.TRAFFIC,
+			roadview: kakao.maps.MapTypeId.ROADVIEW,
+			bicycle: kakao.maps.MapTypeId.BICYCLE,
+			skyview: kakao.maps.MapTypeId.SKYVIEW,
+			hybrid: kakao.maps.MapTypeId.HYBRID,
+			};
+		
+		function setOverlayMapTypeId() {
+			var chkTraffic = document.getElementById('chkTraffic'),
+				chkRoadview = document.getElementById('chkRoadview'),
+				chkBicycle = document.getElementById('chkBicycle'),
+				chkSkyview = document.getElementById('chkSkyview'),
+				chkHybrid = document.getElementById('chkHybrid');
+
+			for (var type in mapTypes) {
+				map.removeOverlayMapTypeId(mapTypes[type]);
 			}
-			if (maptype === 'skyview') {
-				map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP)
-				roadmapControl.className = 'btn';
-				skyviewControl.className = 'selected_btn';
-				hybridControl.className = 'btn';
-				roadviewControl.className = 'btn';
-				trafficControl.className = 'btn';
-				bicycleControl.className = 'btn';
+
+			if (chkTraffic.checked) {
+				map.addOverlayMapTypeId(mapTypes.traffic);
 			}
-			if (maptype === 'hybrid') {
-				map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP)
-				roadmapControl.className = 'btn';
-				skyviewControl.className = 'btn';
-				hybridControl.className = 'selected_btn';
-				roadviewControl.className = 'btn';
-				trafficControl.className = 'btn';
-				bicycleControl.className = 'btn';
+
+			if (chkRoadview.checked) {
+				map.addOverlayMapTypeId(mapTypes.roadview);
 			}
-			if (maptype === 'roadview') {
-				map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP)
-				roadmapControl.className = 'btn';
-				skyviewControl.className = 'btn';
-				hybridControl.className = 'btn';
-				roadviewControl.className = 'selected_btn';
-				trafficControl.className = 'btn';
-				bicycleControl.className = 'btn';
-			}
-			if (maptype === 'traffic') {
-				map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP)
-				roadmapControl.className = 'btn';
-				skyviewControl.className = 'btn';
-				hybridControl.className = 'btn';
-				roadviewControl.className = 'btn';
-				trafficControl.className = 'selected_btn';
-				bicycleControl.className = 'btn';
-			}
-			if (maptype === 'bicycle') {
-				map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP)
-				roadmapControl.className = 'btn';
-				skyviewControl.className = 'btn';
-				hybridControl.className = 'btn';
-				roadviewControl.className = 'btn';
-				trafficControl.className = 'btn';
-				bicycleControl.className = 'selected_btn';
+
+			if (chkBicycle.checked) {
+				map.addOverlayMapTypeId(mapTypes.bicycle);
 			}
 		}
-		
-		// 지도 확대, 축소 컨트롤 함수.
+		// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수이다.
 		function zoomIn() {
 			map.setLevel(map.getLevel() -1);
 		}
+
+		// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수이다.
 		function zoomOunt() {
 			map.setLevel(map.getLevel() +1);
 		}
