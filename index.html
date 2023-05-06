@@ -11,6 +11,7 @@
 <body>
     <div id="map" style="width:100%;height:500px;"></div>
     <p>
+	    <input type="checkbox" id="chkRoadmap" onclick="setOverlayMapTypeId()"/> 지도 보기
 	    <input type="checkbox" id="chkTraffic" onclick="setOverlayMapTypeId()"/> 교통정보 보기
 	    <input type="checkbox" id="chkRoadview" onclick="setOverlayMapTypeId()"/> 로드뷰정보 보기
 	    <input type="checkbox" id="chkBicycle" onclick="setOverlayMapTypeId()"/> 자전거도로정보 보기
@@ -28,6 +29,7 @@
 		var map = new kakao.maps.Map(container, options);
 
 		var mapTypes = {
+			roadmap: kakao.maps.MapTypeId.ROADMAP,
 			traffic: kakao.maps.MapTypeId.TRAFFIC,
 			roadview: kakao.maps.MapTypeId.ROADVIEW,
 			bicycle: kakao.maps.MapTypeId.BICYCLE,
@@ -36,7 +38,8 @@
 			};
 		
 		function setOverlayMapTypeId() {
-			var chkTraffic = document.getElementById('chkTraffic'),
+			var chkRoadmap = document.getElementById('chkRoadmap'),
+				chkTraffic = document.getElementById('chkTraffic'),
 				chkRoadview = document.getElementById('chkRoadview'),
 				chkBicycle = document.getElementById('chkBicycle'),
 				chkSkyview = document.getElementById('chkSkyview'),
