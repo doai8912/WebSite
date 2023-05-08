@@ -44,6 +44,7 @@ var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
 var map = new kakao.maps.Map(mapContainer, mapOption); 
 
+
 var markers = [];
 var circles = [];
 var markerControl = document.getElementById('marker-control');
@@ -58,28 +59,22 @@ function addMarker(position) {
 
   markers.push(marker);
 
-  // Add click event listener to the marker
+  // 마커를 클릭할 때 이벤트 등록
   kakao.maps.event.addListener(marker, 'click', function() {
-    deleteMarker(marker);
+    // 마커가 클릭된 위치를 찾아서 markers 배열에서 제거
+    var index = markers.indexOf(marker);
+    if (index > -1) {
+      markers.splice(index, 1);
+    }
+
+    // 해당 마커와 연결된 원 제거
+    circles[index].setMap(null);
+    circles.splice(index, 1);
+
+    // 마커 제거
+    marker.setMap(null);
   });
 }
-
-function deleteMarker(marker) {
-  marker.setMap(null);
-  //find and remove circle from array using center of circle
-  var thecircle = circles.find(obj => {
-    return obj.center === marker.position;
-  })
-  console.log(thecircle)
-  thecircle.setMap(null);
-  circles.pop(thecircle)
-  /*
-  markers = markers.filter(function(item) {
-    return item !== marker;
-  });
-  */
-}
-
 
 kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
     if (isMarkerControlActive) {
